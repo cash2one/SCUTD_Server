@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>川大脱单申请表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="dist/semantic.min.css">
+    <style>
+        .perfect-input {
+            /*        position: static !import;*/
+        }
+        
+        label {
+            padding: 3px 3px 0px 3px;
+            left: 12px;
+            font-size: 15px;
+            position: relative;
+            top: 14px;
+            background-color: #FFF;
+            display: inline-block !important;
+            z-index: 2;
+            color: #4b4b4b
+        }
+        .jd{
+            padding: 0px;
+            position:fixed;
+            top: 0px;
+            left: 0px;
+            background-color: rgb(25,202,35);
+            /*width:50%;*/
+            height: 3px;
+            transition:width 1s;
+            width: 0px;
+        }
+
+        
+    </style>
+</head>
+
+<body style="padding:20px">
+
+
+    <div class="jd"></div>
+
+<center><h1 style="font-size:40px;color:#2a3744">川大脱单</h1></center>
+    
+    <div  class="ui form" style="transition:all 1s;">
+        
+        
+        <div class="ui field first_input" >
+            <label for="" class="title-lable">你的微信号</label>
+            <input type="email" class="ui input wechat-input" placeholder="输入微信号来查询你的脱单状态">
+
+        </div>
+        <br>
+        
+
+        <button class="fluid ui button" style="color:#4b4b4b">脱了吗?</button>
+
+    </div>
+
+
+    <script src="js/jquery.js"></script>
+    <script src="dist/semantic.min.js"></script>
+    <script>
+//初始化se
+$('#example1').progress();
+        
+
+        var jd = $(".jd")
+        var btn = $("button.button")
+        var uiform = $(".ui.form")
+        var lable = $(".title-lable")
+        var input_wc = $(".wechat-input")
+        var art_board_height = $(window).height()-40
+        var ui_form_height = $("div.ui.form").height()
+        var art_1 = (art_board_height-50-ui_form_height)/2-50
+        var art_2 = art_board_height-50-ui_form_height
+
+        $(".first_input").css("margin-top",art_1)
+
+
+        btn.click(function(){
+            var wechat_id = input_wc.val()
+            uiform.css("margin-top",art_2)
+            jd.width("40%")
+
+            $.get("/checkme?mail="+wechat_id,function(data,state){
+                console.log(state)
+
+
+            })
+            
+        })
+
+        
+    </script>
+</body>
+
+</html>

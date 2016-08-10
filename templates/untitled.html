@@ -1,0 +1,30 @@
+<center>切换到大表哥模式<a href="/?publish=0">点我</a>||切换到脱单模式<a href="/?publish=1">点我</a></center><br>
+        <div class="da-card-box">
+        {%for x in user_info%}
+        <div class="da-card" card-index="{{loop.index}}">
+            <div class="da-card-img">
+                <div class="img-slider">
+                    <img src="{{ url_for('static', filename='img/back_temp.gif')}}?imageView/0/w/300/h/600" data-original="{{x['photo']}}" alt="" class="card-img-cover lazy">
+                    <img src="{{ url_for('static', filename='img/back_temp.gif')}}?imageView/0/w/300/h/600" data-original="{{x['card_photo']}}" alt="" class="card-img-back lazy">
+                </div>
+            </div>
+            <div class="da-card-intro">
+                <p>
+                    <span class="card-name">{{x["nick_name"]}}</span>
+                </p>
+                <p>{{x["school"]}}</p>
+                <p><span class="card-intro">{{x["hobbies"]}}</span>
+                </p>
+                <p><span class="card-intro">{{x["prefer"]}}</span>
+                </p>
+                <p class="bottom-btn">
+                    <a href="javascript:void(0)" class="btn btn-del" objectId="{{x['objectId']}}" index="{{loop.index}}">删除</a>
+                    <a href="javascript:void(0)" class="btn btn-on" objectId="{{x['objectId']}}" index="{{loop.index}}">上架</a>
+                </p>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    <div class="select_body">
+        <button class="submit-btn" disabled="true" href="javascript:void(0)" onclick="upload_user()">点击提交</button>
+    </div>

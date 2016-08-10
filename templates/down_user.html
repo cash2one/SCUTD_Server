@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+   
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">川大脱单</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">新的一期<strong class="caret"></strong></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">川大脱单</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">脱单大表哥</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="active">
+                                <a href="#">用户下架</a>
+                            </li>
+                            <li>
+                                <a href="#">友商分析</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">更多功能<strong class="caret"></strong></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">立刻同步全部问卷</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Another action</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Something else here</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="#">Separated link</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="#">One more separated link</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <!-- <li>
+                             <a href="#">Link</a>
+                        </li>
+                        <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                     <a href="#">Action</a>
+                                </li>
+                                <li>
+                                     <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                     <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                     <a href="#">Separated link</a>
+                                </li>
+                            </ul>
+                        </li> -->
+                        </ul>
+                    </div>
+                </nav>
+                 {% raw %}
+                <div class="row clearfix ">
+                    <div class="col-md-6 column " id="down_title">
+                        <h2>已上架用户<small></small></h2>
+                        <!-- <form role="form"> -->
+                        <div class="form-group">
+                            <label for="down_magazine">请选择来源(脱单大表哥:0,川大脱单:1)</label>
+                            <select class="form-control" id="down_magazine" v-model="magazine">
+                                <option selected>1</option>
+                                <option>0</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="down_title_select">请选择期数</label>
+                            <select class="form-control" id="down_title_select" v-model="title">
+                                <option v-for="title in title_list">{{ title }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="down_index">请选择第几个</label>
+                            <select class="form-control" id="down_index" v-model="index_">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <p style="color:red" v-if="type_">{{type_}}</p>
+                        <button class="btn btn-default btn-block btn-primary" v-on:click="down_by_title">尝试下架</button>
+                        <!-- </form> -->
+                    </div>
+                    <div class="col-md-6 column " id="down_unpublished">
+                        <h2>还未上架的用户<small></small></h2>
+                        <div class="form-group">
+                            <label for="user_wechat">用户微信号</label>
+                            <input type="text" class="form-control" id="user_wechat" v-model="wechat_id" />
+                            <!-- <p>{{}}</p> -->
+                        </div>
+                        <p style="color:red" v-if="message">{{ message }}</p>
+                        <button class="btn btn-default btn-block btn-primary" v-on:click="down_by_wechat_id">尝试下架</button>
+                    </div>
+                </div>
+                {% endraw %}
+            </div>
+        </div>
+    </div>
+    
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/vue.js"></script>
+    <script type="text/javascript">
+    var down_title = new Vue({
+        el: "#down_title",
+        data: {
+            magazine: 1,
+            title_list: [],
+            title: 1,
+            index_: 1,
+            type_: ""
+        },
+        methods: {
+            down_by_title: function() {
+                $.get("./down_people_by_title", {
+                    "title": this.title,
+                    "magazine": this.magazine,
+                    "index_": this.index_
+                }, function(data) {
+                    data = JSON.parse(data)
+                    if (data.success == "success") {
+                        down_title.type_ = "成功"
+                    } else {
+                        down_title.type_ = "失败"
+                    }
+                })
+            }
+
+        },
+
+    })
+    down_title.$watch("magazine", function() {
+        get_title_list(down_title.magazine)
+    })
+    var down_unpublished = new Vue({
+        el: "#down_unpublished",
+        data: {
+            wechat_id: "",
+            message: ""
+        },
+        methods: {
+            down_by_wechat_id: function() {
+                if (this.wechat_id) {
+                    this.message = ""
+                    $.get("./down_people_unpublished", {
+                        "wechat_id": this.wechat_id,
+
+                    }, function(data) {
+                        data = JSON.parse(data)
+                        if (data.success == "success") {
+                            down_unpublished.message = "成功"
+                        } else if (data.success == "none") {
+                            down_unpublished.message = "用户不存在"
+                        } else {
+                            down_unpublished.message = "失败"
+                        }
+                    })
+                } else {
+                    this.message = "请填写微信号"
+                }
+            }
+
+        }
+
+    })
+
+    function get_title_list(magazine) {
+        var list_
+        $.get("./get_title_list", {
+            magazine: magazine
+        }, function(data) {
+            list_ = JSON.parse(data)
+            down_title.title_list = list_
+        })
+        return list_
+    }
+    $(document).ready(function() {
+        down_title.magazine = 1
+    })
+    </script>
+</body>
+
+</html>

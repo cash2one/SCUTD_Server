@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>川大脱单后台很硬</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/fav.ico')}}" media="screen" />
+    <style>
+.da-card-box{
+    width:50%;
+    float: left;
+}
+    </style>
+}
+</head>
+
+<body>
+<center>切换到大表哥模式<a href="/?publish=0">点我</a>||切换到脱单模式<a href="/?publish=1">点我</a></center><br>
+        <div class="da-card-box">
+        {%for x in user_info["boy"]%}
+        <div class="da-card" card-index="{{loop.index}}">
+            <div class="da-card-img">
+                <div class="img-slider">
+                    <img src="{{x['photo']}}?imageView/0/w/200/h/600" data-original="{{x['photo']}}" alt="" class="card-img-cover lazy">
+                    <a href="{{x['card_photo']}}" target="_blank"><img src="{{x['card_photo']}}?imageView/0/w/200/h/600" data-original="{{x['card_photo']}}" alt="" class="card-img-back lazy"></a>
+                </div>
+            </div>
+            <div class="da-card-intro">
+                <p>
+                    <span class="card-name">{{x["nick_name"]}}-{{x["school"]}}-{{x["age"]}}</span>
+                </p>
+                <p><a href="{{x['photo']}}" target="_blank" style="color:red;">查看照片</a>&nbsp;<a href="{{x['card_photo']}}" target="_blank" style="color:red;">查看饭卡</a></p>
+                <p><span class="card-intro">{{x["hobbies"]}}</span>
+                </p>
+                <p><span class="card-intro">{{x["prefer"]}}</span>
+                </p>
+                <p class="bottom-btn">
+                    <a href="javascript:void(0)" class="btn btn-del" objectId="{{x['objectId']}}" index="{{loop.index}}">删除</a>
+                    <a href="javascript:void(0)" class="btn btn-on" objectId="{{x['objectId']}}" index="{{loop.index}}">上架</a>
+                </p>
+            </div>
+        </div>
+        {%endfor%}
+        </div>
+        <div class="da-card-box">
+        {%for x in user_info["girl"]%}
+        <div class="da-card" card-index="{{loop.index}}">
+            <div class="da-card-img">
+                <div class="img-slider">
+                    <img src="{{x['photo']}}?imageView/0/w/200/h/600" data-original="{{x['photo']}}" alt="" class="card-img-cover lazy">
+                    <a href="{{x['card_photo']}}" target="_blank"><img src="{{x['card_photo']}}?imageView/0/w/200/h/600" data-original="{{x['card_photo']}}" alt="" class="card-img-back lazy"></a>
+                </div>
+            </div>
+            <div class="da-card-intro">
+                <p>
+                    <span class="card-name">{{x["nick_name"]}}-{{x["school"]}}-{{x["age"]}}</span>
+                </p>
+                <p><a href="{{x['photo']}}" target="_blank" style="color:red;">查看照片</a>&nbsp;<a href="{{x['card_photo']}}" target="_blank" style="color:red;">查看饭卡</a></p>
+                <p><span class="card-intro">{{x["hobbies"]}}</span>
+                </p>
+                <p><span class="card-intro">{{x["prefer"]}}</span>
+                </p>
+                <p class="bottom-btn">
+                    <a href="javascript:void(0)" class="btn btn-del" objectId="{{x['objectId']}}" index="{{loop.index}}">删除</a>
+                    <a href="javascript:void(0)" class="btn btn-on" objectId="{{x['objectId']}}" index="{{loop.index}}">上架</a>
+                </p>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    <div class="select_body">
+        <button class="submit-btn" disabled="true" href="javascript:void(0)" onclick="upload_user()">点击提交</button>
+    </div>
+    <!-- <div class="shadow">
+    
+    
+    
+</div> -->
+    <!-- <div class="dialog">
+    <div class="dialog-header">
+        <a href="">x</a>
+    </div>
+    <div class="dialog-body"></div>
+    <div class="dialog-footer">
+        <div class="dialog-btn">yes</div>
+        <div class="dialog-btn">now</div>
+    </div>
+    
+
+</div> -->
+    <script src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+<!-- <script src="{{ url_for('static', filename='js/lazyload.js')}}"></script> -->
+<!-- <script src="{{ url_for('static', filename='js/line-nest.js')}}"></script> -->
+
+    <script>
+    //设置懒惰加载
+
+//结束
+
+    var a = ["aa", "aa", "aa"]
+    console.log(a.join("-"))
+    var user_list = []
+    var select_body = $(".select_body")
+    var submit_btn = $(".submit-btn")
+
+    // $(".bottom-btn>.btn").click(add_user())
+
+
+
+    $("p.bottom-btn>a.btn-on").click(function(){
+        var objid = $(this).attr("objectId")
+        var index_ = $(this).attr("index")
+        var card_parent = $("div[card-index=" + index_ + "]")
+        var img_url = card_parent.find("img.card-img-cover").attr("src")
+        select_body.prepend('<div class="little-block"><img src="' + img_url + '" alt=""></div>')
+            //此处把选中的图片添加到下面的选中栏
+
+        card_parent.hide()
+            // 此处把已选择项目隐藏
+        user_list.push(objid)
+            //此处把即将写入的内容添加到数列中
+        submit_btn.prop("disabled", false)
+            //先预设为false
+        if (user_list.length < 4) {
+            submit_btn.prop("disabled", true)
+        }
+        console.log("aaa")
+    })
+    function upload_user(){
+        console.log("bbb")
+        var arg_ = user_list.join("-")
+        var url = "/make_magazing?user=" + arg_
+        console.log(url)
+        $.get(url, function(data) {
+            console.log(data)
+            var data = JSON.parse(data)
+            if (data["stat"]==200) {
+                console.log("kkk")
+                select_body.prepend('<a href="/page?page='+data["data"]["title"]+'" target="_blank">点我跳转</a>')
+            }
+        })
+
+
+    }
+    $(".btn-del").click(function(){
+        var objid = $(this).attr("objectId")
+        var index_ = $(this).attr("index")
+        var card_parent = $("div[card-index=" + index_ + "]")
+        console.log(card_parent)
+        $.get("/del_img_by_objid?del="+objid,function(data){
+            if(data=="1")
+            {
+                card_parent.hide()
+                alert("成功删除,项目代码:"+objid)
+            }
+            else
+            {
+                alert("删除失败")
+
+            }
+        })
+    })
+
+    function update_school_id(){
+        alert("开始处理")
+        $.get("/update_school_id",function(data){
+            alert(data)
+            if(data["success"]=="success"){
+                alert("处理成功")
+                 window.location.reload()
+            }
+        })
+    }
+    </script>
+</body>
+
+</html>

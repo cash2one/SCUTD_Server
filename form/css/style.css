@@ -1,0 +1,41 @@
+body{
+/*    color: #555;*/
+    background: #FFFFFF;
+    color: #2D3F50
+}
+
+.logo {
+    width: 200px;
+    height: 100px;
+    margin: 0px auto;
+}
+
+.form-body {
+    
+    
+}
+
+.logo-font {
+    text-align: center;
+}
+
+.radio-block {
+    display: block;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 5px
+}
+.form-group{
+margin-bottom: 40px;
+    
+    
+}
+
+
+.btn-mine {
+    margin-bottom: 30px;
+}
+
+.weichat-icon {
+    width: 0px;
+}
